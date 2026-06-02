@@ -1,0 +1,53 @@
+name: Test
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Start services
+        run: docker compose up -d --wait
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Copy env file
+        run: |
+          cp .env.example .env
+          npx auth secret --set BETTER_AUTH_SECRET --env .env
+
+      - name: Run migrations
+        run: npx prisma migrate deploy
+
+      - name: Seed database
+        run: npm run db:seed
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Browser testing
+        uses: cypress-io/github-action@v7
+        with:
+          build: npm run build
+          start: npm run start
+          wait-on: "http://localhost:3000"
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/energyi"
+          BETTER_AUTH_SECRET: "ci-test-secret"
+          BETTER_AUTH_URL: "http://localhost:3000"
