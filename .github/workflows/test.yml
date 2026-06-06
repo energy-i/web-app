@@ -30,7 +30,7 @@ jobs:
       - name: Copy env file
         run: |
           cp .env.example .env
-          npx auth secret --set BETTER_AUTH_SECRET --env .env
+          echo "BETTER_AUTH_SECRET=$(openssl rand -hex 32)" >> .env
 
       - name: Run migrations
         run: npx prisma migrate deploy
