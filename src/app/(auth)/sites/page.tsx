@@ -1,6 +1,7 @@
-import { notFound } from "next/navigation";
+import { InfoIcon } from "lucide-react";
 
 import SitesTable from "@/components/sites-table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,10 +22,6 @@ const Page = async () => {
       organisationId: user?.organisationId || undefined,
     },
   });
-
-  if (!sites || sites.length === 0) {
-    notFound();
-  }
 
   return (
     <>
@@ -47,7 +44,18 @@ const Page = async () => {
         </div>
       </header>
       <div className="flex-1 flex-col gap-4 p-4 pt-0 space-y-4">
-        <SitesTable sites={sites} />
+        {sites.length > 0 ? (
+          <SitesTable sites={sites} />
+        ) : (
+          <Alert>
+            <InfoIcon />
+            <AlertTitle>No sites available</AlertTitle>
+            <AlertDescription>
+              Your organisation does not have any sites set up yet. Please
+              contact your administrator.
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
     </>
   );

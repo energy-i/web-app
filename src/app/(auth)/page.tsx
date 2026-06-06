@@ -1,4 +1,4 @@
-import { Badge, InfoIcon, TrendingUpIcon } from "lucide-react";
+import { InfoIcon, ZapIcon } from "lucide-react";
 
 import SitesTable from "@/components/sites-table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -12,7 +12,6 @@ import {
   Card,
   CardAction,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -65,25 +64,36 @@ async function DashboardPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               <Card className="@container/card">
                 <CardHeader>
-                  <CardDescription>Total Revenue</CardDescription>
+                  <CardDescription>Peak power</CardDescription>
                   <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                    $1,250.00
+                    4.2 kW
                   </CardTitle>
                   <CardAction>
-                    <Badge>
-                      <TrendingUpIcon />
-                      +12.5%
-                    </Badge>
+                    <ZapIcon />
                   </CardAction>
                 </CardHeader>
-                <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                  <div className="line-clamp-1 flex gap-2 font-medium">
-                    Trending up this month <TrendingUpIcon className="size-4" />
-                  </div>
-                  <div className="text-muted-foreground">
-                    Visitors for the last 6 months
-                  </div>
-                </CardFooter>
+              </Card>
+              <Card className="@container/card">
+                <CardHeader>
+                  <CardDescription>Peak power</CardDescription>
+                  <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                    4.2 kW
+                  </CardTitle>
+                  <CardAction>
+                    <ZapIcon />
+                  </CardAction>
+                </CardHeader>
+              </Card>
+              <Card className="@container/card">
+                <CardHeader>
+                  <CardDescription>Peak power</CardDescription>
+                  <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                    4.2 kW
+                  </CardTitle>
+                  <CardAction>
+                    <ZapIcon />
+                  </CardAction>
+                </CardHeader>
               </Card>
             </div>
             <SitesTable sites={organisation.sites} />

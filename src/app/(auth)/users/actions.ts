@@ -11,7 +11,7 @@ export async function createUser(data: { name: string; email: string }) {
     throw new Error("Unauthorized");
   }
 
-  const newUser = await auth.api.createUser({
+  const response = await auth.api.createUser({
     headers: await headers(),
     body: {
       name: data.name,
@@ -24,7 +24,14 @@ export async function createUser(data: { name: string; email: string }) {
     },
   });
 
-  return newUser;
+  await auth.api.requestPasswordReset({
+    body: {
+      email: response.user.email,
+      redirectTo: "/reset-password",
+    },
+  });
+
+  return response.user;
 }
 
 export async function deleteUser(userId: string) {

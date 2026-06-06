@@ -7,8 +7,13 @@ import { redirect } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
+import { sendEmail } from "./email";
+
 export const auth = betterAuth({
   plugins: [admin()],
+  emailVerification: {
+    sendOnSignUp: true,
+  },
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -20,8 +25,12 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
-      // TODO: Replace with your email provider (e.g. Resend, SendGrid)
       console.log(`Password reset link for ${user.email}: ${url}`);
+      await sendEmail({
+        to: user.email,
+        subject: "Reset your password",
+        html: `Click the link to reset your password: ${url}`,
+      });
     },
   },
   user: {

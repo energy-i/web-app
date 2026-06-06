@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -32,6 +33,7 @@ const formSchema = z.object({
 });
 
 const CreateUserForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,6 +49,7 @@ const CreateUserForm = () => {
         description: `An invitation has been sent to ${data.email}.`,
       });
       form.reset();
+      router.refresh();
     } catch (error) {
       toast.error("Failed to create user", {
         description:
