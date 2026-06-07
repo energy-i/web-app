@@ -12,7 +12,7 @@ interface SendEmailOptions {
 export async function sendEmail({ from, to, subject, html }: SendEmailOptions) {
   try {
     await resend.emails.send({
-      from: from || "contact@gridsustainsolutions.co.uk",
+      from: from || "contact@energy-i.ai",
       to,
       subject,
       html,
