@@ -1,4 +1,5 @@
 import { InfoIcon, ZapIcon } from "lucide-react";
+import Link from "next/link";
 
 import SitesTable from "@/components/sites-table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -8,6 +9,7 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -61,6 +63,9 @@ async function DashboardPage() {
           </Alert>
         ) : (
           <>
+            <Button asChild variant="secondary" className="mb-4">
+              <Link href="/sites/new">Add new site</Link>
+            </Button>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               <Card className="@container/card">
                 <CardHeader>

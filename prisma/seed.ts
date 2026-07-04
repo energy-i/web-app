@@ -24,6 +24,45 @@ const SECTORS = [
 
 const COMMS_VENDORS = ["Stark", "Elster", "Landis+Gyr", "Itron", "Siemens"];
 
+const AREA_NAMES = [
+  "Reception",
+  "Office Floor",
+  "Warehouse",
+  "Kitchen",
+  "Plant Room",
+  "Production Line",
+  "Cold Storage",
+  "Meeting Suite",
+  "Server Room",
+  "Showroom",
+];
+
+const APPLIANCE_TYPES = [
+  "Heat Pump",
+  "Air Handling Unit",
+  "Boiler",
+  "Chiller",
+  "Compressor",
+  "Lighting Panel",
+  "Solar Inverter",
+  "Water Heater",
+  "Refrigeration Unit",
+  "EV Charger",
+];
+
+const APPLIANCE_MODELS = [
+  "Model-A1",
+  "Model-B2",
+  "Model-C3",
+  "Model-D4",
+  "Model-E5",
+  "Series-100",
+  "Series-200",
+  "Series-300",
+  "Pro-X",
+  "Pro-Z",
+];
+
 const CITIES = [
   { city: "London", lat: 51.5074, lng: -0.1278 },
   { city: "Manchester", lat: 53.4808, lng: -2.2426 },
@@ -90,7 +129,7 @@ async function main() {
 
   // Create user with credential account
   const userId = randomUUID();
-  const hashedPassword = await hashPassword("password123");
+  const hashedPassword = await hashPassword("password");
 
   const user = await prisma.user.create({
     data: {
@@ -148,6 +187,63 @@ async function main() {
     await prisma.site.create({ data: site });
   }
   console.log(`Created ${sites.length} sites`);
+
+  let totalAreas = 0;
+  let totalAppliances = 0;
+
+  for (const site of sites) {
+    const areaCount = Math.floor(Math.random() * 4) + 2;
+    const usedAreaNames = new Set<string>();
+    const areasForSite: { id: string; name: string }[] = [];
+
+    for (let i = 0; i < areaCount; i++) {
+      let areaName = randomElement(AREA_NAMES);
+
+      while (usedAreaNames.has(areaName)) {
+        areaName = randomElement(AREA_NAMES);
+      }
+
+      usedAreaNames.add(areaName);
+
+      const area = await prisma.area.create({
+        data: {
+          id: randomUUID(),
+          name: areaName,
+          createdAt: now,
+          updatedAt: now,
+          siteId: site.id,
+        },
+      });
+
+      areasForSite.push({ id: area.id, name: area.name });
+      totalAreas += 1;
+    }
+
+    const applianceCount = Math.floor(Math.random() * 7) + 4;
+
+    for (let i = 0; i < applianceCount; i++) {
+      const attachToArea = Math.random() > 0.2;
+      const selectedArea = attachToArea ? randomElement(areasForSite) : null;
+
+      await prisma.appliance.create({
+        data: {
+          id: randomUUID(),
+          name: randomElement(APPLIANCE_TYPES),
+          model: randomElement(APPLIANCE_MODELS),
+          serial: `SN-${Math.random().toString(36).slice(2, 10).toUpperCase()}`,
+          createdAt: now,
+          updatedAt: now,
+          siteId: site.id,
+          areaId: selectedArea?.id,
+        },
+      });
+
+      totalAppliances += 1;
+    }
+  }
+
+  console.log(`Created ${totalAreas} areas`);
+  console.log(`Created ${totalAppliances} appliances`);
 
   console.log("\nSeed complete!");
   console.log("Login credentials: admin@energycorp.com / password123");

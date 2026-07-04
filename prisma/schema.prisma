@@ -15,6 +15,8 @@ datasource db {
 model Organisation {
   id        String   @id @default(uuid()) @db.Uuid
   name      String
+  email     String?
+  address   String?
   createdAt DateTime
   updatedAt DateTime
   users     User[]
@@ -59,8 +61,8 @@ model Session {
   impersonatedBy String?
 
   @@unique([token])
-  @@map("session")
   @@index([userId])
+  @@map("session")
 }
 
 model Account {
@@ -79,8 +81,8 @@ model Account {
   createdAt             DateTime
   updatedAt             DateTime
 
-  @@map("account")
   @@index([userId])
+  @@map("account")
 }
 
 model Verification {
@@ -91,8 +93,15 @@ model Verification {
   createdAt  DateTime?
   updatedAt  DateTime?
 
-  @@map("verification")
   @@index([identifier])
+  @@map("verification")
+}
+
+enum MeterType {
+  SMETS2
+  SMETS1
+  LEGACY
+  SUB
 }
 
 model Site {
@@ -108,10 +117,61 @@ model Site {
   eac            Float?
   commsVendor    String?
   commsId        String?
+  meterType      MeterType?
   createdAt      DateTime
   updatedAt      DateTime
   organisationId String       @db.Uuid
   organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)
+  appliances     Appliance[]
+  areas          Area[]
+  tariff         Tariff?      @relation(fields: [tariffId], references: [id])
+  tariffId       String?      @db.Uuid
 
   @@map("site")
+}
+
+model Tariff {
+  id                      String    @id @default(uuid()) @db.Uuid
+  name                    String
+  supplier                String
+  ratePerKwh              Float
+  standingCharge          Float
+  standingChargeFrequency String
+  capacityCharge          Float?
+  capacityChargeUnit      String?
+  climateChangeLevy       Float?
+  climateChangeLevyUnit   String?
+  renewalDate             DateTime?
+  createdAt               DateTime
+  updatedAt               DateTime
+  sites                   Site[]
+
+  @@map("tariff")
+}
+
+model Area {
+  id         String      @id @default(uuid()) @db.Uuid
+  name       String
+  createdAt  DateTime
+  updatedAt  DateTime
+  siteId     String      @db.Uuid
+  site       Site        @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  appliances Appliance[]
+
+  @@map("areas")
+}
+
+model Appliance {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  model     String
+  serial    String
+  createdAt DateTime
+  updatedAt DateTime
+  siteId    String   @db.Uuid
+  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  areaId    String?  @db.Uuid
+  area      Area?    @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@map("appliance")
 }

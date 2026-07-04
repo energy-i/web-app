@@ -56,7 +56,9 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  Site: 'Site'
+  Site: 'Site',
+  Area: 'Area',
+  Appliance: 'Appliance'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -168,6 +170,31 @@ export const SiteScalarFieldEnum = {
 } as const
 
 export type SiteScalarFieldEnum = (typeof SiteScalarFieldEnum)[keyof typeof SiteScalarFieldEnum]
+
+
+export const AreaScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  siteId: 'siteId'
+} as const
+
+export type AreaScalarFieldEnum = (typeof AreaScalarFieldEnum)[keyof typeof AreaScalarFieldEnum]
+
+
+export const ApplianceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  model: 'model',
+  serial: 'serial',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  siteId: 'siteId',
+  areaId: 'areaId'
+} as const
+
+export type ApplianceScalarFieldEnum = (typeof ApplianceScalarFieldEnum)[keyof typeof ApplianceScalarFieldEnum]
 
 
 export const SortOrder = {

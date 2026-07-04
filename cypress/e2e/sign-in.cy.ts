@@ -18,7 +18,7 @@ describe("Sign In", () => {
 
   it("signs in successfully with valid credentials", () => {
     cy.get("#email").type("admin@energycorp.com");
-    cy.get("#password").type("password123");
+    cy.get("#password").type("password");
     cy.get('button[type="submit"]').click();
 
     cy.url().should("eq", `${Cypress.config("baseUrl")}/`);

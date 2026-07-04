@@ -47,3 +47,13 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type Site = Prisma.SiteModel
+/**
+ * Model Area
+ * 
+ */
+export type Area = Prisma.AreaModel
+/**
+ * Model Appliance
+ * 
+ */
+export type Appliance = Prisma.ApplianceModel

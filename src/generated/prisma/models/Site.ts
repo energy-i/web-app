@@ -309,6 +309,8 @@ export type SiteWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   organisationId?: Prisma.UuidFilter<"Site"> | string
   organisation?: Prisma.XOR<Prisma.OrganisationScalarRelationFilter, Prisma.OrganisationWhereInput>
+  appliances?: Prisma.ApplianceListRelationFilter
+  areas?: Prisma.AreaListRelationFilter
 }
 
 export type SiteOrderByWithRelationInput = {
@@ -328,6 +330,8 @@ export type SiteOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   organisationId?: Prisma.SortOrder
   organisation?: Prisma.OrganisationOrderByWithRelationInput
+  appliances?: Prisma.ApplianceOrderByRelationAggregateInput
+  areas?: Prisma.AreaOrderByRelationAggregateInput
 }
 
 export type SiteWhereUniqueInput = Prisma.AtLeast<{
@@ -350,6 +354,8 @@ export type SiteWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Site"> | Date | string
   organisationId?: Prisma.UuidFilter<"Site"> | string
   organisation?: Prisma.XOR<Prisma.OrganisationScalarRelationFilter, Prisma.OrganisationWhereInput>
+  appliances?: Prisma.ApplianceListRelationFilter
+  areas?: Prisma.AreaListRelationFilter
 }, "id">
 
 export type SiteOrderByWithAggregationInput = {
@@ -412,6 +418,8 @@ export type SiteCreateInput = {
   createdAt: Date | string
   updatedAt: Date | string
   organisation: Prisma.OrganisationCreateNestedOneWithoutSitesInput
+  appliances?: Prisma.ApplianceCreateNestedManyWithoutSiteInput
+  areas?: Prisma.AreaCreateNestedManyWithoutSiteInput
 }
 
 export type SiteUncheckedCreateInput = {
@@ -430,6 +438,8 @@ export type SiteUncheckedCreateInput = {
   createdAt: Date | string
   updatedAt: Date | string
   organisationId: string
+  appliances?: Prisma.ApplianceUncheckedCreateNestedManyWithoutSiteInput
+  areas?: Prisma.AreaUncheckedCreateNestedManyWithoutSiteInput
 }
 
 export type SiteUpdateInput = {
@@ -448,6 +458,8 @@ export type SiteUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organisation?: Prisma.OrganisationUpdateOneRequiredWithoutSitesNestedInput
+  appliances?: Prisma.ApplianceUpdateManyWithoutSiteNestedInput
+  areas?: Prisma.AreaUpdateManyWithoutSiteNestedInput
 }
 
 export type SiteUncheckedUpdateInput = {
@@ -466,6 +478,8 @@ export type SiteUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organisationId?: Prisma.StringFieldUpdateOperationsInput | string
+  appliances?: Prisma.ApplianceUncheckedUpdateManyWithoutSiteNestedInput
+  areas?: Prisma.AreaUncheckedUpdateManyWithoutSiteNestedInput
 }
 
 export type SiteCreateManyInput = {
@@ -599,6 +613,11 @@ export type SiteSumOrderByAggregateInput = {
   eac?: Prisma.SortOrder
 }
 
+export type SiteScalarRelationFilter = {
+  is?: Prisma.SiteWhereInput
+  isNot?: Prisma.SiteWhereInput
+}
+
 export type SiteCreateNestedManyWithoutOrganisationInput = {
   create?: Prisma.XOR<Prisma.SiteCreateWithoutOrganisationInput, Prisma.SiteUncheckedCreateWithoutOrganisationInput> | Prisma.SiteCreateWithoutOrganisationInput[] | Prisma.SiteUncheckedCreateWithoutOrganisationInput[]
   connectOrCreate?: Prisma.SiteCreateOrConnectWithoutOrganisationInput | Prisma.SiteCreateOrConnectWithoutOrganisationInput[]
@@ -649,6 +668,34 @@ export type NullableFloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type SiteCreateNestedOneWithoutAreasInput = {
+  create?: Prisma.XOR<Prisma.SiteCreateWithoutAreasInput, Prisma.SiteUncheckedCreateWithoutAreasInput>
+  connectOrCreate?: Prisma.SiteCreateOrConnectWithoutAreasInput
+  connect?: Prisma.SiteWhereUniqueInput
+}
+
+export type SiteUpdateOneRequiredWithoutAreasNestedInput = {
+  create?: Prisma.XOR<Prisma.SiteCreateWithoutAreasInput, Prisma.SiteUncheckedCreateWithoutAreasInput>
+  connectOrCreate?: Prisma.SiteCreateOrConnectWithoutAreasInput
+  upsert?: Prisma.SiteUpsertWithoutAreasInput
+  connect?: Prisma.SiteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SiteUpdateToOneWithWhereWithoutAreasInput, Prisma.SiteUpdateWithoutAreasInput>, Prisma.SiteUncheckedUpdateWithoutAreasInput>
+}
+
+export type SiteCreateNestedOneWithoutAppliancesInput = {
+  create?: Prisma.XOR<Prisma.SiteCreateWithoutAppliancesInput, Prisma.SiteUncheckedCreateWithoutAppliancesInput>
+  connectOrCreate?: Prisma.SiteCreateOrConnectWithoutAppliancesInput
+  connect?: Prisma.SiteWhereUniqueInput
+}
+
+export type SiteUpdateOneRequiredWithoutAppliancesNestedInput = {
+  create?: Prisma.XOR<Prisma.SiteCreateWithoutAppliancesInput, Prisma.SiteUncheckedCreateWithoutAppliancesInput>
+  connectOrCreate?: Prisma.SiteCreateOrConnectWithoutAppliancesInput
+  upsert?: Prisma.SiteUpsertWithoutAppliancesInput
+  connect?: Prisma.SiteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SiteUpdateToOneWithWhereWithoutAppliancesInput, Prisma.SiteUpdateWithoutAppliancesInput>, Prisma.SiteUncheckedUpdateWithoutAppliancesInput>
+}
+
 export type SiteCreateWithoutOrganisationInput = {
   id?: string
   name: string
@@ -664,6 +711,8 @@ export type SiteCreateWithoutOrganisationInput = {
   commsId?: string | null
   createdAt: Date | string
   updatedAt: Date | string
+  appliances?: Prisma.ApplianceCreateNestedManyWithoutSiteInput
+  areas?: Prisma.AreaCreateNestedManyWithoutSiteInput
 }
 
 export type SiteUncheckedCreateWithoutOrganisationInput = {
@@ -681,6 +730,8 @@ export type SiteUncheckedCreateWithoutOrganisationInput = {
   commsId?: string | null
   createdAt: Date | string
   updatedAt: Date | string
+  appliances?: Prisma.ApplianceUncheckedCreateNestedManyWithoutSiteInput
+  areas?: Prisma.AreaUncheckedCreateNestedManyWithoutSiteInput
 }
 
 export type SiteCreateOrConnectWithoutOrganisationInput = {
@@ -730,6 +781,190 @@ export type SiteScalarWhereInput = {
   organisationId?: Prisma.UuidFilter<"Site"> | string
 }
 
+export type SiteCreateWithoutAreasInput = {
+  id?: string
+  name: string
+  addressLine1: string
+  city: string
+  postcode: string
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  eac?: number | null
+  commsVendor?: string | null
+  commsId?: string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+  organisation: Prisma.OrganisationCreateNestedOneWithoutSitesInput
+  appliances?: Prisma.ApplianceCreateNestedManyWithoutSiteInput
+}
+
+export type SiteUncheckedCreateWithoutAreasInput = {
+  id?: string
+  name: string
+  addressLine1: string
+  city: string
+  postcode: string
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  eac?: number | null
+  commsVendor?: string | null
+  commsId?: string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+  organisationId: string
+  appliances?: Prisma.ApplianceUncheckedCreateNestedManyWithoutSiteInput
+}
+
+export type SiteCreateOrConnectWithoutAreasInput = {
+  where: Prisma.SiteWhereUniqueInput
+  create: Prisma.XOR<Prisma.SiteCreateWithoutAreasInput, Prisma.SiteUncheckedCreateWithoutAreasInput>
+}
+
+export type SiteUpsertWithoutAreasInput = {
+  update: Prisma.XOR<Prisma.SiteUpdateWithoutAreasInput, Prisma.SiteUncheckedUpdateWithoutAreasInput>
+  create: Prisma.XOR<Prisma.SiteCreateWithoutAreasInput, Prisma.SiteUncheckedCreateWithoutAreasInput>
+  where?: Prisma.SiteWhereInput
+}
+
+export type SiteUpdateToOneWithWhereWithoutAreasInput = {
+  where?: Prisma.SiteWhereInput
+  data: Prisma.XOR<Prisma.SiteUpdateWithoutAreasInput, Prisma.SiteUncheckedUpdateWithoutAreasInput>
+}
+
+export type SiteUpdateWithoutAreasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressLine1?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  postcode?: Prisma.StringFieldUpdateOperationsInput | string
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  eac?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  commsVendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commsId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organisation?: Prisma.OrganisationUpdateOneRequiredWithoutSitesNestedInput
+  appliances?: Prisma.ApplianceUpdateManyWithoutSiteNestedInput
+}
+
+export type SiteUncheckedUpdateWithoutAreasInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressLine1?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  postcode?: Prisma.StringFieldUpdateOperationsInput | string
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  eac?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  commsVendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commsId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organisationId?: Prisma.StringFieldUpdateOperationsInput | string
+  appliances?: Prisma.ApplianceUncheckedUpdateManyWithoutSiteNestedInput
+}
+
+export type SiteCreateWithoutAppliancesInput = {
+  id?: string
+  name: string
+  addressLine1: string
+  city: string
+  postcode: string
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  eac?: number | null
+  commsVendor?: string | null
+  commsId?: string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+  organisation: Prisma.OrganisationCreateNestedOneWithoutSitesInput
+  areas?: Prisma.AreaCreateNestedManyWithoutSiteInput
+}
+
+export type SiteUncheckedCreateWithoutAppliancesInput = {
+  id?: string
+  name: string
+  addressLine1: string
+  city: string
+  postcode: string
+  sector?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  area?: number | null
+  eac?: number | null
+  commsVendor?: string | null
+  commsId?: string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+  organisationId: string
+  areas?: Prisma.AreaUncheckedCreateNestedManyWithoutSiteInput
+}
+
+export type SiteCreateOrConnectWithoutAppliancesInput = {
+  where: Prisma.SiteWhereUniqueInput
+  create: Prisma.XOR<Prisma.SiteCreateWithoutAppliancesInput, Prisma.SiteUncheckedCreateWithoutAppliancesInput>
+}
+
+export type SiteUpsertWithoutAppliancesInput = {
+  update: Prisma.XOR<Prisma.SiteUpdateWithoutAppliancesInput, Prisma.SiteUncheckedUpdateWithoutAppliancesInput>
+  create: Prisma.XOR<Prisma.SiteCreateWithoutAppliancesInput, Prisma.SiteUncheckedCreateWithoutAppliancesInput>
+  where?: Prisma.SiteWhereInput
+}
+
+export type SiteUpdateToOneWithWhereWithoutAppliancesInput = {
+  where?: Prisma.SiteWhereInput
+  data: Prisma.XOR<Prisma.SiteUpdateWithoutAppliancesInput, Prisma.SiteUncheckedUpdateWithoutAppliancesInput>
+}
+
+export type SiteUpdateWithoutAppliancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressLine1?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  postcode?: Prisma.StringFieldUpdateOperationsInput | string
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  eac?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  commsVendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commsId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organisation?: Prisma.OrganisationUpdateOneRequiredWithoutSitesNestedInput
+  areas?: Prisma.AreaUpdateManyWithoutSiteNestedInput
+}
+
+export type SiteUncheckedUpdateWithoutAppliancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressLine1?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  postcode?: Prisma.StringFieldUpdateOperationsInput | string
+  sector?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  area?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  eac?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  commsVendor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commsId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organisationId?: Prisma.StringFieldUpdateOperationsInput | string
+  areas?: Prisma.AreaUncheckedUpdateManyWithoutSiteNestedInput
+}
+
 export type SiteCreateManyOrganisationInput = {
   id?: string
   name: string
@@ -762,6 +997,8 @@ export type SiteUpdateWithoutOrganisationInput = {
   commsId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appliances?: Prisma.ApplianceUpdateManyWithoutSiteNestedInput
+  areas?: Prisma.AreaUpdateManyWithoutSiteNestedInput
 }
 
 export type SiteUncheckedUpdateWithoutOrganisationInput = {
@@ -779,6 +1016,8 @@ export type SiteUncheckedUpdateWithoutOrganisationInput = {
   commsId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appliances?: Prisma.ApplianceUncheckedUpdateManyWithoutSiteNestedInput
+  areas?: Prisma.AreaUncheckedUpdateManyWithoutSiteNestedInput
 }
 
 export type SiteUncheckedUpdateManyWithoutOrganisationInput = {
@@ -799,6 +1038,44 @@ export type SiteUncheckedUpdateManyWithoutOrganisationInput = {
 }
 
 
+/**
+ * Count Type SiteCountOutputType
+ */
+
+export type SiteCountOutputType = {
+  appliances: number
+  areas: number
+}
+
+export type SiteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appliances?: boolean | SiteCountOutputTypeCountAppliancesArgs
+  areas?: boolean | SiteCountOutputTypeCountAreasArgs
+}
+
+/**
+ * SiteCountOutputType without action
+ */
+export type SiteCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SiteCountOutputType
+   */
+  select?: Prisma.SiteCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SiteCountOutputType without action
+ */
+export type SiteCountOutputTypeCountAppliancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApplianceWhereInput
+}
+
+/**
+ * SiteCountOutputType without action
+ */
+export type SiteCountOutputTypeCountAreasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AreaWhereInput
+}
+
 
 export type SiteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -817,6 +1094,9 @@ export type SiteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   organisationId?: boolean
   organisation?: boolean | Prisma.OrganisationDefaultArgs<ExtArgs>
+  appliances?: boolean | Prisma.Site$appliancesArgs<ExtArgs>
+  areas?: boolean | Prisma.Site$areasArgs<ExtArgs>
+  _count?: boolean | Prisma.SiteCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["site"]>
 
 export type SiteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -878,6 +1158,9 @@ export type SiteSelectScalar = {
 export type SiteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "addressLine1" | "city" | "postcode" | "sector" | "latitude" | "longitude" | "area" | "eac" | "commsVendor" | "commsId" | "createdAt" | "updatedAt" | "organisationId", ExtArgs["result"]["site"]>
 export type SiteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organisation?: boolean | Prisma.OrganisationDefaultArgs<ExtArgs>
+  appliances?: boolean | Prisma.Site$appliancesArgs<ExtArgs>
+  areas?: boolean | Prisma.Site$areasArgs<ExtArgs>
+  _count?: boolean | Prisma.SiteCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SiteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organisation?: boolean | Prisma.OrganisationDefaultArgs<ExtArgs>
@@ -890,6 +1173,8 @@ export type $SitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Site"
   objects: {
     organisation: Prisma.$OrganisationPayload<ExtArgs>
+    appliances: Prisma.$AppliancePayload<ExtArgs>[]
+    areas: Prisma.$AreaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1302,6 +1587,8 @@ readonly fields: SiteFieldRefs;
 export interface Prisma__SiteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organisation<T extends Prisma.OrganisationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganisationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganisationClient<runtime.Types.Result.GetResult<Prisma.$OrganisationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  appliances<T extends Prisma.Site$appliancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$appliancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppliancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  areas<T extends Prisma.Site$areasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Site$areasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1744,6 +2031,54 @@ export type SiteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Sites to delete.
    */
   limit?: number
+}
+
+/**
+ * Site.appliances
+ */
+export type Site$appliancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Appliance
+   */
+  select?: Prisma.ApplianceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Appliance
+   */
+  omit?: Prisma.ApplianceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApplianceInclude<ExtArgs> | null
+  where?: Prisma.ApplianceWhereInput
+  orderBy?: Prisma.ApplianceOrderByWithRelationInput | Prisma.ApplianceOrderByWithRelationInput[]
+  cursor?: Prisma.ApplianceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApplianceScalarFieldEnum | Prisma.ApplianceScalarFieldEnum[]
+}
+
+/**
+ * Site.areas
+ */
+export type Site$areasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Area
+   */
+  select?: Prisma.AreaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Area
+   */
+  omit?: Prisma.AreaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AreaInclude<ExtArgs> | null
+  where?: Prisma.AreaWhereInput
+  orderBy?: Prisma.AreaOrderByWithRelationInput | Prisma.AreaOrderByWithRelationInput[]
+  cursor?: Prisma.AreaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AreaScalarFieldEnum | Prisma.AreaScalarFieldEnum[]
 }
 
 /**

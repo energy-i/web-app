@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  CircleUserRoundIcon,
-  CommandIcon,
-  LayoutDashboardIcon,
-  ListIcon,
-} from "lucide-react";
+import { CommandIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
@@ -22,26 +17,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Organisation, User } from "@/generated/prisma/client";
 
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: LayoutDashboardIcon,
-    },
-    {
-      title: "Sites",
-      url: "/sites",
-      icon: ListIcon,
-    },
-    {
-      title: "Admin",
-      url: "/users",
-      icon: CircleUserRoundIcon,
-    },
-  ],
-};
-
 interface Props {
   user: User & { organisation: Organisation };
 }
@@ -49,13 +24,6 @@ interface Props {
 export function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar> & Props) {
-  const navItems = data.navMain.filter((item) => {
-    if (item.title === "Admin") {
-      return props.user.role === "admin";
-    }
-    return true;
-  });
-
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -74,7 +42,7 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navItems} />
+        <NavMain />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={props.user} />
