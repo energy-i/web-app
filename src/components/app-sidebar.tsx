@@ -15,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Organisation, User } from "@/generated/prisma/client";
+import { Organisation, User } from "@/lib/types";
 
 interface Props {
   user: User & { organisation: Organisation };

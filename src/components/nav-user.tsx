@@ -18,8 +18,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Organisation, User } from "@/generated/prisma/client";
 import { signOut } from "@/lib/auth-client";
+import { Organisation, User } from "@/lib/types";
 
 export function NavUser({
   user,

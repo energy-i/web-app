@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Site } from "@/generated/prisma/client";
+import { Site } from "@/lib/types";
 
 const SitesTable = ({ sites }: { sites: Site[] }) => {
   return (

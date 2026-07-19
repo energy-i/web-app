@@ -12,16 +12,10 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { getUserWithOrganisation } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getSites } from "@/lib/api";
 
 const Page = async () => {
-  const user = await getUserWithOrganisation();
-  const sites = await prisma.site.findMany({
-    where: {
-      organisationId: user?.organisationId || undefined,
-    },
-  });
+  const sites = await getSites();
 
   return (
     <>

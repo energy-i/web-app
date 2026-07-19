@@ -19,19 +19,10 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { getUserWithOrganisation } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getOrganisation } from "@/lib/api";
 
 async function DashboardPage() {
-  const user = await getUserWithOrganisation();
-  const organisation = await prisma.organisation.findFirst({
-    where: {
-      id: user?.organisationId || undefined,
-    },
-    include: {
-      sites: true,
-    },
-  });
+  const organisation = await getOrganisation();
 
   return (
     <>

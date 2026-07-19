@@ -1,14 +1,18 @@
-import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-import { auth } from "@/lib/auth";
+// Middleware runs in the Edge runtime where `next/headers` is unavailable, so
+// we forward the incoming Cookie header directly to the API's /me endpoint.
+const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:3001/v1";
 
 export async function proxy(request: NextRequest) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
+  const cookie = request.headers.get("cookie") ?? "";
+
+  const res = await fetch(`${API_BASE_URL}/me`, {
+    headers: cookie ? { cookie } : undefined,
+    cache: "no-store",
   });
 
-  if (!session) {
+  if (!res.ok) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 

@@ -20,27 +20,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getUserWithOrganisation } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getMe, getOrganisationUsers } from "@/lib/api";
 
 import CreateUserForm from "./components/create-user-form";
 import DeleteUserForm from "./components/delete-user-form";
 
 const Page = async () => {
-  const user = await getUserWithOrganisation();
+  const user = await getMe();
 
   if (!user || user.role !== "admin") {
     notFound();
   }
 
-  const organisation = await prisma.organisation.findFirst({
-    where: {
-      id: user?.organisationId || undefined,
-    },
-    include: {
-      users: true,
-    },
-  });
+  const organisation = await getOrganisationUsers();
 
   return (
     <>

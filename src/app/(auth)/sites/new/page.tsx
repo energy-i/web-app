@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,17 +15,10 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { getUserWithOrganisation } from "@/lib/auth";
 
 import CreateSiteForm from "./components/create-site-form";
 
 const Page = async () => {
-  const user = await getUserWithOrganisation();
-
-  if (!user) {
-    notFound();
-  }
-
   return (
     <>
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">

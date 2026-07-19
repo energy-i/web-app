@@ -1,8 +1,20 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
+// Base URL of the platform API (Hono). All data + auth is served under /v1.
+// We proxy /api/* -> ${API_BASE_URL}/* so that browser session cookies stay on
+// the Next.js origin and server components can forward them to the API.
+const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:3001/v1";
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${API_BASE_URL}/:path*`,
+      },
+    ];
+  },
 };
 
 export default withSentryConfig(nextConfig, {

@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { getUserWithOrganisation } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getSite } from "@/lib/api";
 
 const Layout = async ({
   params,
@@ -19,16 +18,9 @@ const Layout = async ({
 }: {
   params: Promise<{ id: string }>;
   children: React.ReactNode;
-  powerChart: React.ReactNode;
 }) => {
   const { id } = await params;
-  const user = await getUserWithOrganisation();
-  const site = await prisma.site.findFirst({
-    where: {
-      organisationId: user?.organisationId || undefined,
-      id,
-    },
-  });
+  const site = await getSite(id);
 
   if (!site) {
     notFound();

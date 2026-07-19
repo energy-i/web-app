@@ -14,7 +14,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Site } from "@/generated/prisma/client";
+import type { Site } from "@/lib/types";
 
 import { updateSite } from "../actions";
 

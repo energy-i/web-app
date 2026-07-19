@@ -2,10 +2,10 @@ import { redirect } from "next/navigation";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { getUserWithOrganisation } from "@/lib/auth";
+import { getMe } from "@/lib/api";
 
 async function Layout({ children }: { children: React.ReactNode }) {
-  const user = await getUserWithOrganisation();
+  const user = await getMe();
 
   if (!user) {
     redirect("/sign-in");

@@ -7,12 +7,7 @@ import tseslint from "typescript-eslint";
 
 const eslintConfig = [
   {
-    ignores: [
-      ".next/**",
-      "next-env.d.ts",
-      "src/generated/prisma/**",
-      "cypress/**",
-    ],
+    ignores: [".next/**", "next-env.d.ts", "cypress/**"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

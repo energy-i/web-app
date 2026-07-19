@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { User } from "@/generated/prisma/client";
+import { User } from "@/lib/types";
 
 import { deleteUser } from "../actions";
 

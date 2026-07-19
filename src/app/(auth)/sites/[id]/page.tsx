@@ -8,18 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import prisma from "@/lib/prisma";
+import { getSiteAreas } from "@/lib/api";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
-  const areas = await prisma.area.findMany({
-    where: { siteId: id },
-    include: {
-      _count: { select: { appliances: true } },
-    },
-    orderBy: { name: "asc" },
-  });
+  const areas = await getSiteAreas(id);
 
   if (areas.length === 0) {
     return (

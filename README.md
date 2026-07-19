@@ -1,106 +1,47 @@
-# Better-Auth + Prisma example
+# energyi web app
 
-This example shows how to implement **authentication** using [Better-Auth](https://better-auth.com/), [Next.js](https://nextjs.org/) and [Prisma](https://www.prisma.io).
+This is the Next.js front-end for **energyi**. It has no direct database
+access — all data and authentication are served by the platform API
+(`../platform/apps/api`).
+
+## Architecture
+
+- **Next.js (this app)** — UI, server components, server actions.
+- **Platform API (Hono)** — owns Prisma, the database and Better Auth. Exposed
+  at `http://localhost:3001/v1`.
+
+Requests from this app are proxied via a Next.js rewrite so the browser and
+server always talk to same-origin `/api/*` and session cookies stay on the
+Next.js host:
+
+```
+/api/:path*  ->  ${API_BASE_URL}/:path*   (default: http://localhost:3001/v1)
+```
+
+Configure the target with the `API_BASE_URL` environment variable if the API
+is running elsewhere.
 
 ## Getting started
 
-### 1. Download example and navigate into the project directory
+1. Start the platform API (see `apps/api/README.md`).
+2. Install dependencies and run the dev server:
 
-Download this example:
+   ```
+   npm install
+   npm run dev
+   ```
 
-```
-npx try-prisma@latest --template orm/betterauth-nextjs
-```
+3. Open [http://localhost:3000](http://localhost:3000).
 
-Then, navigate into the project directory:
+## Environment variables
 
-```
-cd betterauth-nextjs
-```
+| Name           | Description                                     | Default                    |
+| -------------- | ----------------------------------------------- | -------------------------- |
+| `API_BASE_URL` | Base URL of the platform API (including `/v1`). | `http://localhost:3001/v1` |
 
-<details><summary><strong>Alternative:</strong> Clone the entire repo</summary>
+## Scripts
 
-Clone this repository:
-
-```
-git clone git@github.com:prisma/prisma-examples.git --depth=1
-```
-
-Install npm dependencies:
-
-```
-cd prisma-examples/orm/betterauth-nextjs
-npm install
-```
-
-</details>
-
-Rename the `.env.example` file to `.env`
-
-### 2. Create a Prisma Postgres instance
-
-This example uses a [Prisma Postgres](https://prisma.io/postgres) database by default. To get started with the project, you will need to setup a Prisma Postgres connection string:
-
-1. Set up a new Prisma Postgres instance in the [Prisma Data Platform Console](https://console.prisma.io) and copy the database connection URL.
-
-2. Add your database url to the `.env`
-
-That's it, your project is now configured to use Prisma Postgres!
-
-### 3. Generate and migrate Prisma client
-
-1. Run the following command to generate the Prisma Client. This is what you will be using to interact with your database.
-
-```
-npx prisma generate
-```
-
-2. Migrate the DB
-
-```
-npx prisma migrate dev --name init
-```
-
-### 4. Set up Better-Auth
-
-1. Generate a Better-Auth secret
-
-```
-npx @better-auth/cli@latest secret
-```
-
-2. Add the secret to the `.env`.
-
-3. (Optional) If running on a port other than 3000, add that url to the `trustedOrigins` field in `auth-client.ts`
-
-```diff
-export const auth = betterAuth({
-  database: prismaAdapter(prisma, {
-    provider: 'postgres',
-  }),
-  emailAndPassword: {
-    enabled: true,
-  },
-+ trustedOrigins: ['http://localhost:3001'],
-})
-```
-
-### 5. Start the development server
-
-```
-npm run dev
-```
-
-The server is now running at http://localhost:3000
-
-## Switch to another database
-
-If you want to try this example with another database rather than Prisma Postgres, refer to the [Databases](https://www.prisma.io/docs/orm/overview/databases) section in our documentation.
-
-## Next steps
-
-- Check out the [Prisma docs](https://www.prisma.io/docs)
-- [Join our community on Discord](https://pris.ly/discord?utm_source=github&utm_medium=prisma_examples&utm_content=next_steps_section) to share feedback and interact with other users.
-- [Subscribe to our YouTube channel](https://pris.ly/youtube?utm_source=github&utm_medium=prisma_examples&utm_content=next_steps_section) for live demos and video tutorials.
-- [Follow us on X](https://pris.ly/x?utm_source=github&utm_medium=prisma_examples&utm_content=next_steps_section) for the latest updates.
-- Report issues or ask [questions on GitHub](https://pris.ly/github?utm_source=github&utm_medium=prisma_examples&utm_content=next_steps_section).
+- `npm run dev` — start the dev server.
+- `npm run build` — production build.
+- `npm start` — start the production server.
+- `npm run lint` — lint the codebase.
