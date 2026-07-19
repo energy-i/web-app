@@ -4,6 +4,7 @@ import { InfoIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { toast } from "sonner";
 
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -55,6 +56,9 @@ function ResetPasswordPage() {
       setError(error.message || "An error occurred");
       setLoading(false);
     } else {
+      toast.success("Password reset successful", {
+        description: "Please sign in with your new password",
+      });
       router.push("/sign-in");
     }
   }

@@ -4,6 +4,7 @@ import { InfoIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,9 @@ export default function SignUpPage() {
       setError(data.error.message || "An error occurred during sign in");
       setLoading(false);
     } else {
+      toast.success("Account created", {
+        description: "Check your email to complete set up",
+      });
       router.push("/");
     }
   }
