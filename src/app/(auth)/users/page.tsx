@@ -80,7 +80,7 @@ const Page = async () => {
                       {user.name[0]}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="font-medium">{user.name}</div>
+                  <div className="font-semibold">{user.name}</div>
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>

@@ -1,6 +1,6 @@
-# energyi web app
+# Energy-i web app
 
-This is the Next.js front-end for **energyi**. It has no direct database
+This is the Next.js front-end for **Energy-i**. It has no direct database
 access — all data and authentication are served by the platform API
 (`../platform/apps/api`).
 

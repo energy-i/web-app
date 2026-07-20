@@ -29,15 +29,10 @@ export function AppSidebar({
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <Link href="/">
-                <CommandIcon className="size-5!" />
-                <span className="text-base font-semibold">energyi</span>
-              </Link>
-            </SidebarMenuButton>
+            <Link className="flex items-center gap-2" href="/">
+              <img src="/logo.svg" alt="Energyi Logo" className="h-12 w-auto" />
+              <span className="text-lg font-semibold">Energy-i</span>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -23,12 +24,12 @@ const SitesTable = ({ sites }: { sites: Site[] }) => {
       <TableBody>
         {sites.map((site) => (
           <TableRow key={site.id}>
-            <TableHead>
+            <TableCell>
               <Link href={`/sites/${site.id}`}>{site.name}</Link>
-            </TableHead>
-            <TableHead>{site.city}</TableHead>
-            <TableHead>1,000</TableHead>
-            <TableHead>500.00</TableHead>
+            </TableCell>
+            <TableCell>{site.city}</TableCell>
+            <TableCell>1,000</TableCell>
+            <TableCell>500.00</TableCell>
           </TableRow>
         ))}
       </TableBody>

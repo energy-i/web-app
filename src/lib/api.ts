@@ -4,9 +4,13 @@ import { headers } from "next/headers";
 
 import type {
   Area,
+  Consumption,
+  ConsumptionInterval,
   OrganisationWithSites,
   OrganisationWithUsers,
   Site,
+  SiteAlert,
+  SiteAlertWithSite,
   User,
   UserWithOrganisation,
 } from "./types";
@@ -107,6 +111,42 @@ export async function getSite(id: string): Promise<Site | null> {
 export async function getSiteAreas(id: string): Promise<Area[]> {
   const { areas } = await apiFetch<{ areas: Area[] }>(`/sites/${id}/areas`);
   return areas;
+}
+
+export async function getSiteConsumption(
+  id: string,
+  params: { from: string; to: string; interval?: ConsumptionInterval },
+): Promise<Consumption> {
+  const search = new URLSearchParams({
+    from: params.from,
+    to: params.to,
+    interval: params.interval ?? "day",
+  });
+  const { consumption } = await apiFetch<{ consumption: Consumption }>(
+    `/sites/${id}/consumption?${search.toString()}`,
+  );
+  return consumption;
+}
+
+export async function getSiteAlerts(siteId: string): Promise<SiteAlert[]> {
+  const { alerts } = await apiFetch<{ alerts: SiteAlert[] }>(
+    `/sites/${siteId}/alerts`,
+  );
+  return alerts;
+}
+
+export async function getAlerts(
+  params: { includeSnoozed?: boolean; includeDismissed?: boolean } = {},
+): Promise<SiteAlertWithSite[]> {
+  const search = new URLSearchParams();
+  if (params.includeSnoozed) search.set("includeSnoozed", "true");
+  if (params.includeDismissed) search.set("includeDismissed", "true");
+  const qs = search.toString();
+
+  const { alerts } = await apiFetch<{ alerts: SiteAlertWithSite[] }>(
+    `/alerts${qs ? `?${qs}` : ""}`,
+  );
+  return alerts;
 }
 
 export type SiteInput = {

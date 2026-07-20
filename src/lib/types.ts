@@ -61,3 +61,46 @@ export type Area = {
 
 export type OrganisationWithSites = Organisation & { sites: Site[] };
 export type OrganisationWithUsers = Organisation & { users: User[] };
+
+export type ConsumptionScope = "site" | "area" | "appliance";
+export type ConsumptionInterval = "hour" | "day" | "week" | "month";
+
+export type ConsumptionPoint = {
+  timestamp: string;
+  value: number;
+};
+
+export type ConsumptionBreakdownItem = {
+  id: string;
+  name: string;
+  total: number;
+  series: ConsumptionPoint[];
+};
+
+export type Consumption = {
+  scope: ConsumptionScope;
+  id: string;
+  from: string;
+  to: string;
+  interval: ConsumptionInterval;
+  unit: string;
+  breakdown: ConsumptionBreakdownItem[];
+};
+
+export type AlertStatus = "ALERT" | "OPPORTUNITY" | "INSIGHT";
+
+export type SiteAlert = {
+  id: string;
+  title: string;
+  description: string;
+  status: AlertStatus;
+  snoozedUntil: string | null;
+  dismissedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  siteId: string;
+};
+
+export type SiteAlertWithSite = SiteAlert & {
+  site: { id: string; name: string };
+};

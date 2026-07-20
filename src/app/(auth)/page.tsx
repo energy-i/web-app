@@ -1,8 +1,6 @@
-import { InfoIcon, ZapIcon } from "lucide-react";
+import { ListIcon, ZapIcon } from "lucide-react";
 import Link from "next/link";
 
-import SitesTable from "@/components/sites-table";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,6 +15,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { getOrganisation } from "@/lib/api";
@@ -44,19 +50,26 @@ async function DashboardPage() {
       </header>
       <div className="flex-1 flex-col gap-4 p-4 pt-0 space-y-4">
         {!organisation || !organisation.sites.length ? (
-          <Alert>
-            <InfoIcon />
-            <AlertTitle>No sites available</AlertTitle>
-            <AlertDescription>
-              Your organisation does not have any sites set up yet. Please
-              contact your administrator.
-            </AlertDescription>
-          </Alert>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <ListIcon />
+              </EmptyMedia>
+              <EmptyTitle>Welcome to Energy-i</EmptyTitle>
+              <EmptyDescription>
+                We need to onboard your first site, please get in touch with us.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="mailto:help@energy-i.ai?subject=Energy-i%20Support">
+                  Contact us
+                </Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
         ) : (
           <>
-            <Button asChild variant="secondary" className="mb-4">
-              <Link href="/sites/new">Add new site</Link>
-            </Button>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               <Card className="@container/card">
                 <CardHeader>
@@ -92,7 +105,6 @@ async function DashboardPage() {
                 </CardHeader>
               </Card>
             </div>
-            <SitesTable sites={organisation.sites} />
           </>
         )}
       </div>

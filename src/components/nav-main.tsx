@@ -1,13 +1,13 @@
 "use client";
 
 import {
+  BellIcon,
   LayoutDashboardIcon,
   LifeBuoyIcon,
   ListIcon,
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
 
 import {
   SidebarGroup,
@@ -40,6 +40,14 @@ export function NavMain() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
+              <Link href="/alerts">
+                <BellIcon />
+                <span>Alerts</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
               <Link href="/users">
                 <UserIcon />
                 <span>Admin</span>
@@ -47,16 +55,11 @@ export function NavMain() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={() =>
-                toast("Feature coming soon", {
-                  description:
-                    "This feature is not yet available. Please check back later.",
-                })
-              }
-            >
-              <LifeBuoyIcon />
-              <span>Help</span>
+            <SidebarMenuButton asChild>
+              <a href="mailto:help@energy-i.ai?subject=Energy-i%20Support">
+                <LifeBuoyIcon />
+                <span>Help</span>
+              </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

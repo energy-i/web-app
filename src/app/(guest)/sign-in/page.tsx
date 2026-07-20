@@ -6,7 +6,12 @@ import { useState } from "react";
 
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { CardDescription, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
@@ -43,51 +48,88 @@ function Page() {
   }
 
   return (
-    <form onSubmit={handleSignIn}>
-      <FieldGroup>
-        <div className="flex flex-col items-center gap-2 text-center">
-          <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
-          <CardDescription>Sign in to your energyi account</CardDescription>
+    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-4xl">
+        <div className="flex flex-col gap-6">
+          <Card className="overflow-hidden p-0">
+            <CardContent className="grid p-0 md:grid-cols-2">
+              <div className="p-6 md:p-8">
+                <form onSubmit={handleSignIn}>
+                  <FieldGroup>
+                    <div className="flex flex-col items-center gap-2 text-center">
+                      <CardTitle className="text-2xl font-semibold flex items-center gap-2">
+                        <img
+                          src="/logo.svg"
+                          alt="Energyi Logo"
+                          className="h-12 w-auto"
+                        />
+                        Energy-i
+                      </CardTitle>
+                      <CardDescription>Sign in to your account</CardDescription>
+                    </div>
+                    {error && (
+                      <Alert variant="destructive" className="mb-4">
+                        <InfoIcon />
+                        <AlertTitle>{error}</AlertTitle>
+                      </Alert>
+                    )}
+                    <Field>
+                      <FieldLabel htmlFor="email">Email</FieldLabel>
+                      <Input
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                      />
+                    </Field>
+                    <Field>
+                      <div className="flex items-center">
+                        <FieldLabel htmlFor="password">Password</FieldLabel>
+                        <a
+                          href="/forgot-password"
+                          className="ml-auto text-sm underline-offset-2 hover:underline"
+                        >
+                          Forgot your password?
+                        </a>
+                      </div>
+                      <Input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                      />
+                    </Field>
+                    <Field>
+                      <Button disabled={loading} type="submit">
+                        {loading && (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}{" "}
+                        Sign in
+                      </Button>
+                    </Field>
+                    <FieldDescription className="text-center">
+                      Don&apos;t have an account? <a href="/sign-up">Sign up</a>
+                    </FieldDescription>
+                  </FieldGroup>
+                </form>
+              </div>
+              <div className="relative hidden bg-muted md:block">
+                <img
+                  src="/renewable-energy.webp"
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover opacity-50"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-primary mix-blend-color blur-2xl"
+                />
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        {error && (
-          <Alert variant="destructive" className="mb-4">
-            <InfoIcon />
-            <AlertTitle>{error}</AlertTitle>
-          </Alert>
-        )}
-        <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            required
-          />
-        </Field>
-        <Field>
-          <div className="flex items-center">
-            <FieldLabel htmlFor="password">Password</FieldLabel>
-            <a
-              href="/forgot-password"
-              className="ml-auto text-sm underline-offset-2 hover:underline"
-            >
-              Forgot your password?
-            </a>
-          </div>
-          <Input id="password" type="password" name="password" required />
-        </Field>
-        <Field>
-          <Button disabled={loading} type="submit">
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Sign
-            in
-          </Button>
-        </Field>
-        <FieldDescription className="text-center">
-          Don&apos;t have an account? <a href="/sign-up">Sign up</a>
-        </FieldDescription>
-      </FieldGroup>
-    </form>
+      </div>
+    </div>
   );
 }
 
