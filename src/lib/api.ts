@@ -1,7 +1,3 @@
-import "server-only";
-
-import { headers } from "next/headers";
-
 import type {
   Area,
   Consumption,
@@ -15,10 +11,11 @@ import type {
   UserWithOrganisation,
 } from "./types";
 
-// Server-side base URL for the platform API. In dev this defaults to the local
-// Hono server; the browser talks to the same endpoints via the /api/* rewrite
-// configured in next.config.ts so session cookies stay on the Next.js origin.
-const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:3001/v1";
+// Base URL of the platform API (Hono). In dev the browser hits same-origin
+// `/api/*` which Vite proxies to `${API_BASE_URL}/*`. In production set
+// VITE_API_BASE_URL to the API's public URL (e.g. https://api.example.com/v1)
+// — that origin must send CORS headers and support cross-site cookies.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 export class ApiError extends Error {
   constructor(
@@ -31,16 +28,12 @@ export class ApiError extends Error {
 }
 
 async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const incoming = await headers();
-  const cookie = incoming.get("cookie") ?? "";
-
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
-    cache: "no-store",
+    credentials: "include",
     headers: {
       accept: "application/json",
       ...(init.body ? { "content-type": "application/json" } : {}),
-      ...(cookie ? { cookie } : {}),
       ...init.headers,
     },
   });
@@ -188,4 +181,23 @@ export async function createUser(data: {
 
 export async function deleteUser(id: string): Promise<void> {
   await apiFetch<void>(`/users/${id}`, { method: "DELETE" });
+}
+
+export type AlertPatch = {
+  snoozedUntil?: string | null;
+  dismissedAt?: string | null;
+};
+
+export async function patchAlert(
+  id: string,
+  data: AlertPatch,
+): Promise<SiteAlertWithSite> {
+  const { alert } = await apiFetch<{ alert: SiteAlertWithSite }>(
+    `/alerts/${id}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    },
+  );
+  return alert;
 }

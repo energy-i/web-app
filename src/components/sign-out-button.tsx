@@ -1,11 +1,9 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@tanstack/react-router";
 
 import { signOut } from "@/lib/auth-client";
 
 const SignOutButton = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   return (
     <button
@@ -13,7 +11,7 @@ const SignOutButton = () => {
         signOut({
           fetchOptions: {
             onSuccess: () => {
-              router.push("/sign-in");
+              navigate({ to: "/sign-in" });
             },
           },
         })

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 
 import {
   Table,
@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Site } from "@/lib/types";
+import type { Site } from "@/lib/types";
 
 const SitesTable = ({ sites }: { sites: Site[] }) => {
   return (
@@ -25,7 +25,9 @@ const SitesTable = ({ sites }: { sites: Site[] }) => {
         {sites.map((site) => (
           <TableRow key={site.id}>
             <TableCell>
-              <Link href={`/sites/${site.id}`}>{site.name}</Link>
+              <Link to="/sites/$id" params={{ id: site.id }}>
+                {site.name}
+              </Link>
             </TableCell>
             <TableCell>{site.city}</TableCell>
             <TableCell>1,000</TableCell>
