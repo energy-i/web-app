@@ -1,5 +1,4 @@
-"use client";
-
+import { Link } from "@tanstack/react-router";
 import {
   BellIcon,
   LayoutDashboardIcon,
@@ -7,7 +6,6 @@ import {
   ListIcon,
   UserIcon,
 } from "lucide-react";
-import Link from "next/link";
 
 import {
   SidebarGroup,
@@ -24,7 +22,7 @@ export function NavMain() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/">
+              <Link to="/">
                 <LayoutDashboardIcon />
                 <span>Dashboard</span>
               </Link>
@@ -32,7 +30,7 @@ export function NavMain() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/sites">
+              <Link to="/sites">
                 <ListIcon />
                 <span>Sites</span>
               </Link>
@@ -40,7 +38,7 @@ export function NavMain() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/alerts">
+              <Link to="/alerts" search={{ view: "active" }}>
                 <BellIcon />
                 <span>Alerts</span>
               </Link>
@@ -48,7 +46,7 @@ export function NavMain() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/users">
+              <Link to="/users">
                 <UserIcon />
                 <span>Admin</span>
               </Link>

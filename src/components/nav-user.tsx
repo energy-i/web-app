@@ -1,7 +1,5 @@
-"use client";
-
+import { useNavigate } from "@tanstack/react-router";
 import { EllipsisVerticalIcon, LogOutIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,14 +17,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { signOut } from "@/lib/auth-client";
-import { Organisation, User } from "@/lib/types";
+import type { Organisation, User } from "@/lib/types";
 
 export function NavUser({
   user,
 }: {
   user: User & { organisation: Organisation };
 }) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { isMobile } = useSidebar();
 
   return (
@@ -76,21 +74,12 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuGroup>
-              <DropdownMenuItem asChild>
-                <Link href="/users">
-                  <CircleUserRoundIcon />
-                  Users
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator /> */}
             <DropdownMenuItem
               onClick={() =>
                 signOut({
                   fetchOptions: {
                     onSuccess: () => {
-                      router.push("/sign-in");
+                      navigate({ to: "/sign-in" });
                     },
                   },
                 })
