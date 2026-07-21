@@ -1,5 +1,4 @@
-"use client";
-
+import { Link } from "@tanstack/react-router";
 import {
   BellIcon,
   LayoutDashboardIcon,
@@ -7,7 +6,6 @@ import {
   ListIcon,
   UserIcon,
 } from "lucide-react";
-import Link from "next/link";
 
 import {
   SidebarGroup,
@@ -16,15 +14,29 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import type { Organisation, User } from "@/lib/types";
+import { isAdminRole } from "@/lib/types";
 
-export function NavMain() {
+export function NavMain({
+  user,
+}: {
+  user: User & { organisation: Organisation };
+}) {
+  const isAdmin = isAdminRole(user.role);
+
+  // Include the org name in the mailto subject so support can identify the
+  // tenant without asking. `encodeURIComponent` handles spaces / punctuation.
+  const helpHref = `mailto:help@energy-i.ai?subject=${encodeURIComponent(
+    `Energy-i Support — ${user.organisation.name}`,
+  )}`;
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/">
+              <Link to="/">
                 <LayoutDashboardIcon />
                 <span>Dashboard</span>
               </Link>
@@ -32,7 +44,7 @@ export function NavMain() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/sites">
+              <Link to="/sites">
                 <ListIcon />
                 <span>Sites</span>
               </Link>
@@ -40,23 +52,25 @@ export function NavMain() {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/alerts">
+              <Link to="/alerts" search={{ view: "active" }}>
                 <BellIcon />
                 <span>Alerts</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+          {isAdmin ? (
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link to="/users">
+                  <UserIcon />
+                  <span>Admin</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ) : null}
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/users">
-                <UserIcon />
-                <span>Admin</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <a href="mailto:help@energy-i.ai?subject=Energy-i%20Support">
+              <a href={helpHref}>
                 <LifeBuoyIcon />
                 <span>Help</span>
               </a>

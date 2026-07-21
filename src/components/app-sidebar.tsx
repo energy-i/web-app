@@ -1,7 +1,4 @@
-"use client";
-
-import { CommandIcon } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@tanstack/react-router";
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
@@ -12,10 +9,9 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Organisation, User } from "@/lib/types";
+import type { Organisation, User } from "@/lib/types";
 
 interface Props {
   user: User & { organisation: Organisation };
@@ -29,7 +25,7 @@ export function AppSidebar({
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link className="flex items-center gap-2" href="/">
+            <Link className="flex items-center gap-2" to="/">
               <img src="/logo.svg" alt="Energyi Logo" className="h-12 w-auto" />
               <span className="text-lg font-semibold">Energy-i</span>
             </Link>
@@ -37,7 +33,7 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain />
+        <NavMain user={props.user} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={props.user} />

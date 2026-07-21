@@ -1,11 +1,11 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 
 import { signOut } from "@/lib/auth-client";
 
 const SignOutButton = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return (
     <button
@@ -13,7 +13,11 @@ const SignOutButton = () => {
         signOut({
           fetchOptions: {
             onSuccess: () => {
-              router.push("/sign-in");
+              // Wipe every cached query so the next user doesn't see the
+              // previous user's data (and the `_authed` guard refetches
+              // `me` cleanly on the next sign-in).
+              queryClient.clear();
+              navigate({ to: "/sign-in" });
             },
           },
         })

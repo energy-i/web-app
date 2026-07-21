@@ -1,25 +1,25 @@
 # Energy-i web app
 
-This is the Next.js front-end for **Energy-i**. It has no direct database
-access — all data and authentication are served by the platform API
+Vite + React 19 + TypeScript front-end for **Energy-i**. It has no direct
+database access — all data and authentication are served by the platform API
 (`../platform/apps/api`).
 
 ## Architecture
 
-- **Next.js (this app)** — UI, server components, server actions.
+- **Web app (this repo)** — Vite SPA, TanStack Router (file-based), TanStack
+  Query, Better Auth client, shadcn/ui, Tailwind v4.
 - **Platform API (Hono)** — owns Prisma, the database and Better Auth. Exposed
   at `http://localhost:3001/v1`.
 
-Requests from this app are proxied via a Next.js rewrite so the browser and
-server always talk to same-origin `/api/*` and session cookies stay on the
-Next.js host:
+In dev the Vite server proxies same-origin `/api/*` to the API so session
+cookies stay on the web-app host:
 
 ```
 /api/:path*  ->  ${API_BASE_URL}/:path*   (default: http://localhost:3001/v1)
 ```
 
-Configure the target with the `API_BASE_URL` environment variable if the API
-is running elsewhere.
+In production, set `VITE_API_BASE_URL` to the API's public URL. The API must
+send CORS headers and allow cross-site cookies.
 
 ## Getting started
 
@@ -35,13 +35,18 @@ is running elsewhere.
 
 ## Environment variables
 
-| Name           | Description                                     | Default                    |
-| -------------- | ----------------------------------------------- | -------------------------- |
-| `API_BASE_URL` | Base URL of the platform API (including `/v1`). | `http://localhost:3001/v1` |
+| Name                | Description                                            | Default                    |
+| ------------------- | ------------------------------------------------------ | -------------------------- |
+| `API_BASE_URL`      | Dev-server proxy target for `/api/*` (include `/v1`).  | `http://localhost:3001/v1` |
+| `VITE_API_BASE_URL` | Public API base URL used by the browser in production. | `/api` (dev proxy)         |
+| `VITE_SENTRY_DSN`   | Sentry DSN for the browser SDK.                        | —                          |
+| `SENTRY_AUTH_TOKEN` | Enables Sentry source-map upload at build time.        | —                          |
 
 ## Scripts
 
-- `npm run dev` — start the dev server.
+- `npm run dev` — start the Vite dev server on port 3000.
 - `npm run build` — production build.
-- `npm start` — start the production server.
+- `npm run preview` — preview the production build locally.
 - `npm run lint` — lint the codebase.
+- `npm run typecheck` — regenerate the route tree and run `tsc --noEmit`.
+- `npm run generate:routes` — regenerate `src/routeTree.gen.ts`.

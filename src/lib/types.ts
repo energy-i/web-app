@@ -11,6 +11,16 @@ export type Organisation = {
   updatedAt: string;
 };
 
+export type UserRole = "OWNER" | "ADMIN" | "USER";
+
+// Roles that grant administrative access to org-scoped UI (matches the API's
+// `ADMIN_ROLES` set — see `apps/api/src/middleware/auth.ts`).
+export const ADMIN_ROLES: readonly UserRole[] = ["OWNER", "ADMIN"];
+
+export function isAdminRole(role: string | null | undefined): boolean {
+  return role != null && (ADMIN_ROLES as readonly string[]).includes(role);
+}
+
 export type User = {
   id: string;
   name: string;
@@ -20,7 +30,7 @@ export type User = {
   createdAt: string;
   updatedAt: string;
   organisationId: string;
-  role: string | null;
+  role: UserRole | null;
   banned: boolean | null;
   banReason: string | null;
   banExpires: string | null;
@@ -87,13 +97,13 @@ export type Consumption = {
   breakdown: ConsumptionBreakdownItem[];
 };
 
-export type AlertStatus = "ALERT" | "OPPORTUNITY" | "INSIGHT";
+export type AlertType = "ALERT" | "OPPORTUNITY" | "INSIGHT";
 
 export type SiteAlert = {
   id: string;
   title: string;
   description: string;
-  status: AlertStatus;
+  type: AlertType;
   snoozedUntil: string | null;
   dismissedAt: string | null;
   createdAt: string;
@@ -103,4 +113,30 @@ export type SiteAlert = {
 
 export type SiteAlertWithSite = SiteAlert & {
   site: { id: string; name: string };
+};
+
+export type Pagination = {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+};
+
+export type SiteListItem = Site & {
+  _count: { areas: number; appliances: number; alerts: number };
+};
+
+export type PaginatedSites = {
+  sites: SiteListItem[];
+  pagination: Pagination;
+};
+
+export type PaginatedAlerts = {
+  alerts: SiteAlertWithSite[];
+  pagination: Pagination;
+};
+
+export type PaginatedSiteAlerts = {
+  alerts: SiteAlert[];
+  pagination: Pagination;
 };

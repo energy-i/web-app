@@ -1,5 +1,5 @@
-"use client";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import {
   BellIcon,
   BellOffIcon,
@@ -9,8 +9,6 @@ import {
   TriangleAlertIcon,
   XIcon,
 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
 
@@ -22,10 +20,11 @@ import {
 } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { AlertStatus, SiteAlert } from "@/lib/types";
+import { type AlertPatch, patchAlert } from "@/lib/api";
+import type { AlertType, SiteAlert } from "@/lib/types";
 
-const STATUS_META: Record<
-  AlertStatus,
+const TYPE_META: Record<
+  AlertType,
   {
     label: string;
     Icon: React.ComponentType<{ className?: string }>;
@@ -96,47 +95,37 @@ type AlertItem = SiteAlert & {
 };
 
 export function AlertsList({ alerts }: { alerts: AlertItem[] }) {
-  const router = useRouter();
-  const [pendingIds, setPendingIds] = React.useState<Set<string>>(
-    () => new Set(),
-  );
+  const queryClient = useQueryClient();
 
-  const patchAlert = async (
+  const mutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: AlertPatch }) =>
+      patchAlert(id, data),
+    onSuccess: () => {
+      // Refetch every alerts-related query so items move between the
+      // active / snoozed views according to their new state.
+      queryClient.invalidateQueries({ queryKey: ["alerts"] });
+      queryClient.invalidateQueries({ queryKey: ["sites"] });
+    },
+  });
+
+  const runPatch = (
     alert: AlertItem,
-    body: { snoozedUntil?: string | null; dismissedAt?: string | null },
+    data: AlertPatch,
     successMessage: string,
     errorMessage: string,
   ) => {
-    setPendingIds((prev) => new Set(prev).add(alert.id));
-
-    try {
-      const res = await fetch(`/api/alerts/${alert.id}`, {
-        method: "PATCH",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Request failed: ${res.status}`);
-      }
-
-      toast.success(successMessage, { description: alert.title });
-
-      // Re-run the page's server component so the alert moves between the
-      // active / snoozed views according to its new state.
-      router.refresh();
-    } catch {
-      toast.error(errorMessage);
-      setPendingIds((prev) => {
-        const next = new Set(prev);
-        next.delete(alert.id);
-        return next;
-      });
-    }
+    mutation.mutate(
+      { id: alert.id, data },
+      {
+        onSuccess: () =>
+          toast.success(successMessage, { description: alert.title }),
+        onError: () => toast.error(errorMessage),
+      },
+    );
   };
 
   const handleSnooze = (alert: AlertItem) =>
-    patchAlert(
+    runPatch(
       alert,
       {
         snoozedUntil: new Date(
@@ -148,7 +137,7 @@ export function AlertsList({ alerts }: { alerts: AlertItem[] }) {
     );
 
   const handleUnsnooze = (alert: AlertItem) =>
-    patchAlert(
+    runPatch(
       alert,
       { snoozedUntil: null },
       "Unsnoozed",
@@ -156,21 +145,23 @@ export function AlertsList({ alerts }: { alerts: AlertItem[] }) {
     );
 
   const handleDismiss = (alert: AlertItem) =>
-    patchAlert(
+    runPatch(
       alert,
       { dismissedAt: new Date().toISOString() },
       "Dismissed",
       "Failed to dismiss alert",
     );
 
+  const pendingId =
+    mutation.isPending && mutation.variables ? mutation.variables.id : null;
   const now = Date.now();
 
   return (
     <div className="flex flex-col gap-3">
       {alerts.map((alert) => {
-        const meta = STATUS_META[alert.status];
+        const meta = TYPE_META[alert.type];
         const Icon = meta.Icon;
-        const isPending = pendingIds.has(alert.id);
+        const isPending = pendingId === alert.id;
         const isCurrentlySnoozed =
           alert.snoozedUntil !== null &&
           new Date(alert.snoozedUntil).getTime() > now;
@@ -195,7 +186,8 @@ export function AlertsList({ alerts }: { alerts: AlertItem[] }) {
               </time>
               {alert.site ? (
                 <Link
-                  href={`/sites/${alert.site.id}`}
+                  to="/sites/$id"
+                  params={{ id: alert.site.id }}
                   className="text-xs font-normal text-muted-foreground underline-offset-2 hover:underline"
                 >
                   {alert.site.name}

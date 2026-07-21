@@ -15,16 +15,3 @@
 
 // Import commands.js using ES2015 syntax:
 import "./commands";
-
-// Next.js server actions signal a redirect by throwing an error whose digest
-// starts with "NEXT_REDIRECT". The client router listens for this to perform
-// the navigation, so it is expected behaviour — not a real test failure.
-Cypress.on("uncaught:exception", (err) => {
-  if (
-    err.message?.includes("NEXT_REDIRECT") ||
-    // Some Next.js versions expose the digest on the error object instead of the message
-    (err as Error & { digest?: string }).digest?.startsWith("NEXT_REDIRECT")
-  ) {
-    return false;
-  }
-});
